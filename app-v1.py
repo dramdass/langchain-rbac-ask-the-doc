@@ -12,7 +12,7 @@ def generate_response(classifications_files_dict, openai_api_key, query_text, us
         if authorized(user_claims, classification):
             retrievers.append(build_retriever(file, openai_api_key)
 
-    if retrievers is None:
+    if len(retrievers) == 0:
         return "No files authorized for current user"
         
     weights = [1/len(retrievers)] * len(retrievers)
