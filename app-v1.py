@@ -10,7 +10,7 @@ def generate_response(classifications_files_dict, openai_api_key, query_text, us
     retrievers = []
     for classification, file in classifications_files_dict:
         if authorized(user_claims, classification):
-            retrievers.append(build_retriever(file, openai_api_key)
+            retrievers.append(build_retriever(file, openai_api_key))
 
     if len(retrievers) == 0:
         return "No files authorized for current user"
