@@ -1,6 +1,5 @@
-sqlite3 >= 3.35.0
 streamlit
 langchain
 openai
-chromadb
+chromadb == 0.3.29
 tiktoken
