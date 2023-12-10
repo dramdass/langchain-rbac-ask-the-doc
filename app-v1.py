@@ -66,7 +66,7 @@ user_claims_string = st.text_input('Enter your claims separated by commas:', pla
 user_claims = user_claims_string.split(',')
 
 # Query text
-query_text = st.text_input('Enter your question:', placeholder = 'Please provide a short summary.', disabled=not uploaded_file)
+query_text = st.text_input('Enter your question:', placeholder = 'Please provide a short summary.', disabled=disabled)
 
 disabled = diabled and not (user_claims and query_text)
 # Form input and query
