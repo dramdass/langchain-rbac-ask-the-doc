@@ -60,8 +60,9 @@ uploaded_files = {
     'restricted': restricted_file,
     'confidential': confidential_file
 }
+disabled = (len(uploaded_files) == 0)
 
-user_claims_string = st.text_input('Enter your claims separated by commas:', placeholder = 'Please provide a short summary.', disabled=not uploaded_file)
+user_claims_string = st.text_input('Enter your claims separated by commas:', placeholder = 'Please provide a short summary.', disabled=disabled)
 user_claims = user_claims_string.split(',')
 
 # Query text
