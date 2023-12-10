@@ -27,7 +27,9 @@ st.set_page_config(page_title='🦜🔗 Ask the Doc App')
 st.title('🦜🔗 Ask the Doc App')
 
 # File upload
-uploaded_file = st.file_uploader('Upload an article', type='txt')
+internal_file = st.file_uploader('Upload an internal document', type='pdf')
+restricted_file = st.file_uploader('Upload a restricted document', type='pdf')
+confidential_file = st.file_uploader('Upload a confidential document', type='pdf')
 # Query text
 query_text = st.text_input('Enter your question:', placeholder = 'Please provide a short summary.', disabled=not uploaded_file)
 
