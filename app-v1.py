@@ -76,7 +76,7 @@ with st.form('myform', clear_on_submit=True):
     submitted = st.form_submit_button('Submit', disabled=disabled)
     if submitted and openai_api_key.startswith('sk-'):
         with st.spinner('Calculating...'):
-            response = generate_response(uploaded_files, openai_api_key, query_text)
+            response = generate_response(uploaded_files, openai_api_key, query_text, user_claims)
             result.append(response)
             del openai_api_key
 
