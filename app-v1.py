@@ -33,7 +33,7 @@ def authorized(claims, classification):
     return false
 
 def build_retriever(uploaded_file, openai_api_key):
-    f uploaded_file is not None:
+    if uploaded_file is not None:
         documents = [uploaded_file.read().decode()]
     # Split documents into chunks
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
