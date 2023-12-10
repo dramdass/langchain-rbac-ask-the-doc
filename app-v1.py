@@ -68,7 +68,7 @@ user_claims = user_claims_string.split(',')
 # Query text
 query_text = st.text_input('Enter your question:', placeholder = 'Please provide a short summary.', disabled=not uploaded_file)
 
-disabled = not (uploaded_file and user_claims and query_text)
+disabled = diabled and not (user_claims and query_text)
 # Form input and query
 result = []
 with st.form('myform', clear_on_submit=True):
