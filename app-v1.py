@@ -68,11 +68,11 @@ user_claims = user_claims_string.split(',')
 # Query text
 query_text = st.text_input('Enter your question:', placeholder = 'Please provide a short summary.', disabled=disabled)
 
-disabled = diabled and not (user_claims and query_text)
+disabled = disabled and not (user_claims and query_text)
 # Form input and query
 result = []
 with st.form('myform', clear_on_submit=True):
-    openai_api_key = st.text_input('OpenAI API Key', type='password', disabled=disable)
+    openai_api_key = st.text_input('OpenAI API Key', type='password', disabled=disabled)
     submitted = st.form_submit_button('Submit', disabled=disabled)
     if submitted and openai_api_key.startswith('sk-'):
         with st.spinner('Calculating...'):
