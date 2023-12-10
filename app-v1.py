@@ -1,6 +1,7 @@
 import streamlit as st
 from langchain.llms import OpenAI
 from langchain.text_splitter import CharacterTextSplitter
+from langchain.document_loaders import UnstructuredPDFLoader
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
@@ -51,9 +52,9 @@ st.set_page_config(page_title='🦜🔗 Ask the Doc App')
 st.title('🦜🔗 RBAC - Ask the Doc App')
 
 # File upload
-internal_file = st.file_uploader('Upload an internal document', type='pdf')
-restricted_file = st.file_uploader('Upload a restricted document', type='pdf')
-confidential_file = st.file_uploader('Upload a confidential document', type='pdf')
+internal_file = st.file_uploader('Upload an internal document', type='txt')
+restricted_file = st.file_uploader('Upload a restricted document', type='txt')
+confidential_file = st.file_uploader('Upload a confidential document', type='txt')
 
 uploaded_files = {
     'internal': internal_file,
