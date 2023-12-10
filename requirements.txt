@@ -1,7 +1,7 @@
-pysqlite3
 streamlit
 langchain
 openai
+pysqlite3-binary
 chromadb
 tiktoken
 pysqlite3
