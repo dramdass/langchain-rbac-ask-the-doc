@@ -29,8 +29,8 @@ def authorized(claims, classification):
     # todo (dramdass)
     for claim in claims:
         if claim == classification:
-            return true
-    return false
+            return True
+    return False
 
 def build_retriever(uploaded_file, openai_api_key):
     if uploaded_file is not None:
