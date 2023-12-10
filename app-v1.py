@@ -8,7 +8,7 @@ from langchain.chains import RetrievalQA
 def generate_response(classifications_files_dict, openai_api_key, query_text, user_claims):
     # Load document if file is uploaded
     retrievers = []
-    for classification, file in classifications_files_dict:
+    for classification, file in classifications_files_dict.items():
         if authorized(user_claims, classification):
             retrievers.append(build_retriever(file, openai_api_key))
 
