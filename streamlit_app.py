@@ -6,7 +6,7 @@ import sqlite3
 import streamlit as st
 from langchain.llms import OpenAI
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.document_loaders import UnstructuredPDFLoader
+from langchain.retrievers import EnsembleRetriever
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
@@ -24,7 +24,7 @@ def generate_response(classifications_files_dict, openai_api_key, query_text, us
     weights = [1/len(retrievers)] * len(retrievers)
     # initialize the ensemble retriever
     ensemble_retriever = EnsembleRetriever(
-        retrievers=retreivers, weights=weights
+        retrievers=retrievers, weights=weights
     )
     # Create QA chain
                           
