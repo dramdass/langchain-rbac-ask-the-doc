@@ -11,12 +11,24 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 
+
+def setup_rag_sources(classifications_files_dict):
+    for classification, file in classifications_files_dict.items():
+        texts = create_documents_with_classifications(file, classification)
+    
+    # Select embeddings
+    embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
+    # Create a vectorstore from documents
+    return Chroma.from_documents(texts, embeddings)
+
 def generate_response(classifications_files_dict, openai_api_key, query_text, user_claims):
     # Load document if file is uploaded
+    db = setup_rag_sources(classifications_files_dict)
     retrievers = []
-    for classification, file in classifications_files_dict.items():
-        if authorized(user_claims, classification):
-            retrievers.append(build_retriever(file, openai_api_key))
+    for claim in user_claims:
+        # HACK: This assumes that claim == classification. This mapping can be
+        # expanded to map claims to classifications
+        retrievers.append(build_classification_receiver(db, claim))
 
     if len(retrievers) == 0:
         return "No files authorized for current user"
@@ -26,34 +38,30 @@ def generate_response(classifications_files_dict, openai_api_key, query_text, us
     ensemble_retriever = EnsembleRetriever(
         retrievers=retrievers, weights=weights
     )
-    # Create QA chain
-                          
+
+    # Create QA chain                      
     qa = RetrievalQA.from_chain_type(llm=OpenAI(openai_api_key=openai_api_key), chain_type='stuff', retriever=ensemble_retriever)
     return qa.run(query_text)
 
-def authorized(claims, classification):
-    # todo (dramdass)
-    for claim in claims:
-        if claim == classification:
-            return True
-    return False
-
-def build_retriever(uploaded_file, openai_api_key):
-    if uploaded_file is not None:
-        documents = [uploaded_file.read().decode()]
-    # Split documents into chunks
-    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-    texts = text_splitter.create_documents(documents)
-    # Select embeddings
-    embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
-    # Create a vectorstore from documents
-    db = Chroma.from_documents(texts, embeddings)
+def build_classification_receiver(db, classification):
     # Create retriever interface
-    retriever = db.as_retriever()
+    retriever = db.as_retriever(
+        search_kwargs={'filter': {'classification': classification}}
+    )
     return retriever
 
+def create_documents_with_classifications(uploaded_file, classification):
+    if uploaded_file is not None:
+        documents = [uploaded_file.read().decode()]
+        # TODO (dramdass): Extract classification from document itsel
+        metadatas = [{"classification": classification}]
+    # Split documents into chunks
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    texts = text_splitter.create_documents(documents, metadatas)
+    return texts
+
 # Page title
-st.set_page_config(page_title='🦜🔗 Ask the Doc App')
+st.set_page_config(page_title='🦜🔗 RBAC - Ask the Doc App')
 st.title('🦜🔗 RBAC - Ask the Doc App')
 
 # File upload
